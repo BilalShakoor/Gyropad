@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!--
+  Gyropad PC - download page.
+
+  Lives at /Gyropad/pc/ and NOT at the site root, because the root index.html is
+  the privacy policy and the Play Console listing points at it. Repurposing that
+  URL would quietly break the store entry.
+
+  THE DOWNLOAD LINK NEVER NEEDS EDITING. It points at
+  releases/latest/download/Gyropad-PC-Setup.exe - "latest" is resolved by GitHub
+  at click time, so shipping a new release is enough and this file stays as it
+  is. The one rule that keeps it working: every future release must attach the
+  installer under exactly that filename. The URL is an exact match and one
+  character off is a 404.
+
+  No frameworks, no fonts, no analytics, nothing fetched from anywhere. The mark
+  is the app's own vector and its own launch animation, inline. The page is one
+  file so it cannot half-load.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gyropad for Windows</title>
+<meta name="description" content="Download Gyropad PC - the Windows companion that turns your phone into a steering wheel and gamepad.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%237C3AED'/></svg>">
+<style>
+  :root {
+    --brand: #7C3AED;
+    --brand-lit: #A855F7;
+    --brand-pale: #C084FC;
+    --edge: #2A2140;
+    --bg: #0B0910;
+    --surface: #141218;
+    --surface-hi: #1D1B20;
+    --ink: #E6E0E9;
+    --ink-dim: #A9A2B0;
+    --stroke: #2E2A36;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 20px 72px;
+    overflow-x: hidden;            /* nothing should ever scroll sideways */
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  .narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+
+  /* ---- the mark --------------------------------------------------------
+     Still, deliberately. It carried the app's splash animation for a while
+     and it did not earn its place: the splash is an entrance, and an
+     entrance replayed on a loop is either a snap back to the start or a
+     rocking motion that is not the entrance any more. A logo that keeps
+     moving while you read also competes with the one thing on this page
+     that should be moving, which is the note. */
+  header { text-align: center; padding: 56px 0 8px; }
+  .mark {
+    width: 108px; height: 108px; border-radius: 26px;
+    display: block; margin: 0 auto;
+    box-shadow: 0 18px 50px -16px rgba(124, 58, 237, .75);
+  }
+
+  h1 { font-size: 30px; line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.01em; }
+  .sub { color: var(--ink-dim); margin: 0 auto; max-width: 42ch; }
+
+  .cta { margin: 34px 0 10px; text-align: center; }
+  .btn {
+    display: inline-block; width: 100%; max-width: 380px;
+    padding: 18px 28px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-lit) 100%);
+    color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 600; letter-spacing: .01em;
+    border: 1px solid var(--brand-pale);
+    box-shadow: 0 10px 34px -12px rgba(168, 85, 247, .9);
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .btn:hover { filter: brightness(1.07); box-shadow: 0 14px 40px -12px rgba(168, 85, 247, 1); }
+  .btn:active { transform: translateY(2px) scale(.985); }
+  .meta { color: var(--ink-dim); font-size: 14px; margin-top: 12px; }
+
+  .onphone {
+    display: none;
+    margin: 26px auto 0; max-width: 460px; padding: 16px 18px;
+    background: var(--surface-hi); border: 1px solid var(--stroke);
+    border-left: 3px solid var(--brand-lit);
+    border-radius: 14px; color: var(--ink); text-align: left;
+  }
+  .onphone b { color: var(--brand-pale); }
+  body.is-phone .onphone { display: block; }
+  body.is-phone .btn { background: var(--surface-hi); border-color: var(--stroke); box-shadow: none; color: var(--ink-dim); font-weight: 500; }
+
+  /* ---- the two columns -------------------------------------------------
+     DOM order is the PHONE order: note first, then the steps. Above the
+     breakpoint they sit side by side and `order` puts the steps back on the
+     left, so neither layout needs its own copy of the markup. */
+  .cols { display: grid; gap: 30px; margin-top: 40px; }
+  @media (min-width: 900px) {
+    .cols { grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; margin-top: 56px; }
+    .steps { order: 1; }
+    .important { order: 2; }
+  }
+
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--brand-pale); margin: 0 0 18px; font-weight: 600; }
+  section { min-width: 0; }                 /* grid children must be allowed to shrink */
+
+  ol { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  ol li { counter-increment: step; position: relative; padding: 0 0 22px 46px; }
+  ol li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 1px;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--surface-hi); border: 1px solid var(--stroke);
+    color: var(--brand-pale); font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol li b { display: block; }
+  ol li span { color: var(--ink-dim); font-size: 15px; }
+
+  /* ---- the important note ----------------------------------------------
+     Two beats a second: quick enough to read as "look at me", slow enough
+     to read as a note rather than an alarm. An earlier version ran at four
+     beats in amber with a travelling rail down the edge, and the honest
+     verdict was that it looked like a virus warning - which is the one thing
+     a reassuring note about a false-positive warning must not look like.
+
+     So it stays in the brand violet. The message here is "this is expected,
+     carry on", and a red-and-amber panel arguing that is fighting itself. */
+  .important { position: relative; }
+  .important h2 { display: flex; align-items: center; gap: 12px; }
+
+  .beat {
+    position: relative; flex: 0 0 auto;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--brand-lit);
+  }
+  /* The ring is sized to stay within its own box, so it cannot run into the
+     heading text beside it. */
+  .beat::after {
+    content: ''; position: absolute; inset: -1px;
+    border-radius: 50%; border: 1.5px solid var(--brand-lit);
+    animation: ring 1500ms ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ring {
+    0%   { transform: scale(1);   opacity: .85; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+
+  .note {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--stroke);
+    border-radius: 16px; padding: 22px 24px;
+    animation: breathe 1500ms ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { border-color: var(--stroke);
+               box-shadow: 0 0 26px -14px rgba(168, 85, 247, .5); }
+    50%      { border-color: rgba(168, 85, 247, .55);
+               box-shadow: 0 0 42px -8px rgba(168, 85, 247, .8); }
+  }
+
+  .note p { margin: 0 0 12px; font-size: 15px; color: var(--ink-dim); overflow-wrap: anywhere; }
+  .note p:last-child { margin-bottom: 0; }
+  .note strong { color: var(--ink); }
+  .note .lead { color: var(--ink); }
+  kbd {
+    background: var(--surface-hi); border: 1px solid var(--stroke);
+    border-radius: 6px; padding: 1px 7px; font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--ink); white-space: nowrap;
+  }
+
+  /* A chevron that points at the note: down on a phone, across on a desktop.
+     One glyph, no image, and it is the cheapest possible "look here". */
+  /* Only while the two are stacked, so it never points sideways. A media
+     query rather than a class, so it does not need script to appear. */
+  .leader { display: none; text-align: center; color: rgba(168, 85, 247, .6); margin: -6px 0 2px; }
+  @media (max-width: 899px) {
+    .leader { display: block; animation: nudge-down 1.2s ease-in-out infinite; }
+  }
+  @keyframes nudge-down { 0%,100% { transform: translateY(0); opacity: .55; } 50% { transform: translateY(5px); opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .note, .beat, .beat::after, .leader { animation: none !important; }
+    .note { border-color: rgba(168, 85, 247, .55); }
+    .btn { transition: none; }
+  }
+
+  footer { margin-top: 52px; text-align: center; color: var(--ink-dim); font-size: 14px; }
+  footer a { color: var(--brand-pale); }
+
+  @media (max-width: 480px) {
+    header { padding-top: 40px; }
+    h1 { font-size: 25px; }
+    body { padding-left: 16px; padding-right: 16px; }
+    .note { padding: 20px 18px 20px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="narrow">
+      <!-- The app's own mark, authored in a 500-unit box, inline so the page
+           has nothing to fetch. All six pieces: the body, the cross, and the
+           FOUR dots - an earlier version of this page shipped three. -->
+      <svg class="mark" viewBox="0 0 500 500" role="img" aria-label="Gyropad">
+        <defs>
+          <linearGradient id="g" x1="256" y1="498" x2="244" y2="-1" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#7C3AED"/>
+            <stop offset="1" stop-color="#2A2140"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="500" rx="120" fill="url(#g)"/>
+        <g fill="#fff">
+          <path class="body" d="M409.8,254.5c1-22.9-2.4-45.6-10.2-66.9l-2.1-5.7h-.1c-2.8-6.9-6-13.5-9.6-19.9-10.9-19.2-30.1-32.2-51.8-36h0c-2.7-.5-4.3,3-2.1,4.7,10,8.1,26.3,23.5,38.4,46.7l-212.7-36.9c19.1-17.7,39.7-26.8,52-31s2.3-4.7-.4-5.2h0c-21.7-3.8-44.2,2-60.9,16.4-5.6,4.8-10.8,9.9-15.7,15.4h-.1s-3.9,4.7-3.9,4.7c-.9,1.1-1.8,2.2-2.7,3.4-3.1,3.9-6,7.9-8.7,12.1-1,1.6-2.1,3.2-3,4.8-.3.6-.7,1.1-1,1.7-1.3,2.1-2.5,4.3-3.7,6.4,0,.1-.1.2-.2.4-5.4,10.2-9.9,21-13.3,32.3-2,6.8-3.7,13.8-4.9,20.8s-2,14.2-2.4,21.3c-.2,4.5-.3,9-.2,13.5,0,2,.1,3.9.2,5.9.7,12.9,2.9,25.6,6.4,37.9,0,.3.2.5.2.8.3,1.1.7,2.3,1,3.4.9,2.8,1.9,5.6,2.9,8.4l2.1,5.7h.1c2.4,5.9,5.2,11.6,8.3,17.2,11,19.7,30.3,33.4,52.6,37.3h.1c2.8.5,4.3-3,2.1-4.8-15.4-12-28.3-27.6-37.7-45.3l210.8,36.6c-14.8,13.5-32.2,23.8-50.8,29.9-2.7.9-2.4,4.7.4,5.2h.1c22.2,3.9,45-2.5,62-17.3,4.8-4.2,9.3-8.6,13.6-13.4h.1s3.9-4.6,3.9-4.6c19.8-23.5,33.2-52.2,38.5-83,1.3-7.6,2.1-15.2,2.5-22.8ZM385.6,278.6c-.1.5-.2,1.1-.4,1.6-.2,1.1-.5,2.2-.7,3.2-.2.6-.3,1.3-.5,1.9-.2,1-.5,1.9-.8,2.9-.2.7-.4,1.3-.6,2-.3.9-.5,1.8-.8,2.7-.2.7-.4,1.4-.6,2.1-.3.9-.6,1.8-.9,2.6-.2.7-.5,1.4-.7,2.1-.3.9-.6,1.7-.9,2.6-.3.7-.5,1.4-.8,2-.3.9-.7,1.7-1,2.6-.3.7-.6,1.3-.8,2-.4.8-.7,1.7-1.1,2.5-.3.7-.6,1.3-.9,2-.4.8-.8,1.7-1.2,2.5-.3.6-.6,1.3-.9,1.9-.4.9-.9,1.7-1.3,2.5-.3.6-.6,1.2-.9,1.8-.5.9-1,1.8-1.5,2.7-.3.5-.6,1.1-.9,1.6-.6,1-1.3,2.1-1.9,3.1-.2.4-.4.7-.6,1.1-.9,1.4-1.8,2.7-2.7,4.1-.2.3-.4.5-.5.8-.8,1.1-1.5,2.1-2.3,3.2-.3.4-.7.9-1,1.3-.6.7-1.1,1.5-1.7,2.2l-237.7-41.3c-.1-.3-.2-.6-.3-1-.3-.9-.6-1.9-.9-2.8-.4-1.4-.9-2.9-1.2-4.3-.3-1-.5-2-.8-3-.3-1.4-.7-2.8-1-4.2-.2-1-.4-2-.6-3-.3-1.4-.5-2.9-.8-4.3-.2-1-.3-2-.5-3-.2-1.5-.4-3-.5-4.4-.1-1-.2-2-.3-2.9-.2-1.6-.3-3.2-.4-4.8,0-.9-.1-1.8-.2-2.6-.1-2.1-.1-4.1-.2-6.2,0-.4,0-.8,0-1.3,0-2.4,0-4.9.2-7.3l6.6-38.2c.7-2.3,1.4-4.5,2.2-6.8.1-.4.3-.8.5-1.2.7-1.9,1.4-3.8,2.2-5.6.3-.8.7-1.6,1-2.3.6-1.5,1.2-2.9,1.9-4.3.4-.9.8-1.7,1.2-2.6.7-1.3,1.3-2.7,2-4,.5-.9.9-1.7,1.4-2.6.7-1.3,1.4-2.5,2.1-3.8.5-.9,1-1.7,1.5-2.5.8-1.2,1.5-2.5,2.3-3.7.6-.8,1.1-1.6,1.6-2.4.8-1.2,1.7-2.4,2.6-3.6.6-.8,1.1-1.5,1.7-2.3.2-.2.4-.5.5-.7l239,41.5c.3.8.5,1.6.8,2.4.2.5.3,1.1.5,1.6.3,1.1.6,2.3.9,3.5.1.4.2.8.3,1.2.4,1.6.8,3.1,1.1,4.7,0,.1,0,.3,0,.4.3,1.4.6,2.8.9,4.3.1.5.2,1.1.3,1.6.2,1,.4,2.1.5,3.1.1.6.2,1.3.3,1.9.1.9.3,1.9.4,2.9,0,.7.1,1.3.2,2,.1.9.2,1.8.3,2.7,0,.7.1,1.4.2,2.1,0,.9.1,1.8.2,2.7,0,.7,0,1.4.1,2.2,0,.9,0,1.8.1,2.7,0,.7,0,1.4,0,2.1,0,.9,0,1.8,0,2.7,0,.7,0,1.4,0,2.2,0,.9,0,1.8,0,2.7,0,.7,0,1.4,0,2.1,0,.9-.1,1.9-.2,2.8,0,.7,0,1.4-.1,2.1,0,1-.2,1.9-.3,2.9,0,.6-.1,1.3-.2,1.9-.1,1.1-.2,2.1-.4,3.2,0,.5-.1,1.1-.2,1.6-.2,1.6-.5,3.2-.8,4.8s-.6,3.3-.9,4.9Z"/>
+          <path class="cross" d="M226.9,242.2l-22.3-9.2c-2.4-1-4-3.3-4.1-5.9l-1.2-24.1c-.3-6-8.5-7.4-10.9-1.9l-9.2,22.3c-1,2.4-3.3,4-5.9,4.1l-24.1,1.2c-6,.3-7.4,8.5-1.9,10.9l22.9,9.5c2,.8,3.4,2.8,3.5,4.9l1.2,24.7c.3,6,8.5,7.4,10.9,1.9l9.2-22.3c1-2.4,3.3-4,5.9-4.1l24.1-1.2c6-.3,7.4-8.5,1.9-10.9Z"/>
+          <path class="dot d1" d="M319.7,217.2c-7.5-1.3-14.7,3.7-16,11.2s3.7,14.7,11.2,16,14.7-3.7,16-11.2c1.3-7.5-3.7-14.7-11.2-16Z"/>
+          <path class="dot d2" d="M344.9,253.1c-7.5-1.3-14.7,3.7-16,11.2s3.7,14.7,11.2,16,14.7-3.7,16-11.2-3.7-14.7-11.2-16Z"/>
+          <path class="dot d3" d="M309,278.4c-7.5-1.3-14.7,3.7-16,11.2s3.7,14.7,11.2,16,14.7-3.7,16-11.2-3.7-14.7-11.2-16Z"/>
+          <path class="dot d4" d="M283.7,242.5c-7.5-1.3-14.7,3.7-16,11.2-1.3,7.5,3.7,14.7,11.2,16s14.7-3.7,16-11.2c1.3-7.5-3.7-14.7-11.2-16Z"/>
+        </g>
+      </svg>
+
+    <h1>Gyropad for Windows</h1>
+    <p class="sub">The companion app your PC needs, so the phone in your hands can drive the game on your screen.</p>
+  </header>
+
+  <div class="cta narrow">
+    <a class="btn" id="dl"
+       href="https://github.com/BilalShakoor/Gyropad/releases/latest/download/Gyropad-PC-Setup.exe">
+       Download for Windows
+    </a>
+    <p class="meta">Free &middot; Windows 10 and 11 &middot; about 16 MB</p>
+
+    <div class="onphone">
+      <b>You're on a phone.</b> This is the <b>Windows</b> half of Gyropad, so it
+      won't do anything here. Open this page on the PC you want to play on, or
+      tap the button to send yourself the link.
+    </div>
+  </div>
+
+  <!-- Only when the columns are stacked, so it never points sideways. -->
+  <div class="leader" aria-hidden="true">&#9662;</div>
+
+  <div class="cols">
+
+    <!-- First in the DOM, so a phone reads the warning straight after the
+         button it is about. On a wide screen `order` moves it to the right. -->
+    <section class="important">
+      <h2><span class="beat" aria-hidden="true"></span> Important note</h2>
+      <div class="note">
+        <p class="lead">Windows will probably show a blue
+           <strong>&ldquo;Windows protected your PC&rdquo;</strong> box the first
+           time you run the installer.</p>
+        <p>That is <strong>SmartScreen</strong>, and it appears for every new
+           program that has not yet been downloaded by enough people. It is not
+           a virus warning, and nothing is wrong with the file.</p>
+        <p>Click <kbd>More info</kbd>, then <kbd>Run anyway</kbd>.</p>
+        <p>The one thing worth checking is that you got the file from this page.
+           The button above downloads straight from the project's own GitHub
+           releases &mdash; never from a mirror or an advert.</p>
+      </div>
+    </section>
+
+    <section class="steps">
+      <h2>Setting it up</h2>
+      <ol>
+        <li><b>Run the installer on your PC</b>
+          <span>No administrator password needed. It installs just for you.</span></li>
+        <li><b>Put both devices on the same Wi-Fi</b>
+          <span>Or plug the phone in and turn on USB tethering &mdash; Gyropad works over the cable too.</span></li>
+        <li><b>Open Gyropad on your phone and tap Connect</b>
+          <span>Your PC appears in the list by name. Tap it once and you're driving.</span></li>
+      </ol>
+    </section>
+
+  </div>
+
+  <footer>
+    <p><a href="https://github.com/BilalShakoor/Gyropad/releases/latest">All releases and release notes</a><br>
+       <a href="../">Privacy policy</a></p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    // ---- a phone cannot use a Windows installer -----------------------
+    // Coarse pointer plus a narrow viewport is a good enough test: being
+    // wrong costs a visible note, not a broken page, and the button still
+    // works either way.
+    try {
+      var phone = matchMedia('(pointer: coarse)').matches && innerWidth < 900;
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) phone = true;
+      if (/Windows/i.test(navigator.userAgent)) phone = false;
+      if (phone) {
+        document.body.classList.add('is-phone');
+        var b = document.getElementById('dl');
+        b.textContent = 'Send this link to my PC';
+        b.removeAttribute('href');
+        b.setAttribute('role', 'button');
+        b.style.cursor = 'pointer';
+        b.addEventListener('click', function () {
+          var url = location.href.split('#')[0];
+          if (navigator.share) {
+            navigator.share({ title: 'Gyropad for Windows', url: url });
+          } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(function () {
+              b.textContent = 'Link copied';
+            });
+          }
+        });
+      }
+    } catch (e) {
+      // Any failure just leaves the ordinary download page, which is correct.
+    }
+  })();
+</script>
+</body>
+</html>
