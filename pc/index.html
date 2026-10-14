@@ -43,7 +43,7 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font: clamp(16px, 0.35vw + 14.8px, 18px)/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font: clamp(16px, 0.45vw + 14.4px, 20px)/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     padding: 0 20px 72px;
     overflow-x: hidden;            /* nothing should ever scroll sideways */
@@ -68,8 +68,8 @@
 
   /* The PAGE may use a big screen. The reading column still may not - see
      .cols, where the measure is kept narrow on purpose. */
-  .wrap { max-width: 1080px; margin: 0 auto; }
-  .narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  .narrow { max-width: 640px; margin-left: auto; margin-right: auto; }
 
   /* ---- the mark --------------------------------------------------------
      Still, deliberately. It carried the app's splash animation for a while
@@ -85,10 +85,10 @@
     box-shadow: 0 18px 50px -16px rgba(124, 58, 237, .75);
   }
 
-  h1 { font-size: clamp(26px, 2.1vw + 18px, 44px); line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.01em; }
+  h1 { font-size: clamp(27px, 2.3vw + 18px, 52px); line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.01em; }
   .sub {
     color: var(--ink-dim); margin: 0 auto; max-width: 42ch;
-    font-size: clamp(16px, 0.45vw + 15px, 20px);
+    font-size: clamp(17px, 0.5vw + 15px, 23px);
   }
 
   /* Sits under the note now, inside the same column, so it needs far less
@@ -101,14 +101,14 @@
     padding: 18px 28px; border-radius: 999px;
     background: linear-gradient(135deg, var(--brand) 0%, var(--brand-lit) 100%);
     color: #fff; text-decoration: none;
-    font-size: clamp(16px, 0.3vw + 15px, 19px); font-weight: 600; letter-spacing: .01em;
+    font-size: clamp(16px, 0.32vw + 15px, 20.5px); font-weight: 600; letter-spacing: .01em;
     border: 1px solid var(--brand-pale);
     box-shadow: 0 10px 34px -12px rgba(168, 85, 247, .9);
     transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
   }
   .btn:hover { filter: brightness(1.07); box-shadow: 0 14px 40px -12px rgba(168, 85, 247, 1); }
   .btn:active { transform: translateY(2px) scale(.985); }
-  .meta { color: var(--ink-dim); font-size: 14px; margin-top: 12px; }
+  .meta { color: var(--ink-dim); font-size: clamp(14px, 0.2vw + 13.2px, 16.5px); margin-top: 12px; }
 
   /* The Android half, deliberately quieter.
 
@@ -186,44 +186,44 @@
 
      It stays at the header's width rather than spreading across the full
      wrap. A note four paragraphs long set across a thousand pixels is a
-     wall of text the eye loses its place in; 560 is a comfortable measure,
-     and it keeps the whole page on one centre line. */
+     wall of text the eye loses its place in; 640 at this type size is a
+     comfortable measure, and it keeps the page on one centre line. */
   .cols {
     display: grid; gap: 34px; margin-top: 40px;
-    max-width: 560px; margin-left: auto; margin-right: auto;
+    max-width: 640px; margin-left: auto; margin-right: auto;
   }
   /* Two columns again above 1000px, and the measure is why that is safe
      now where it was not before. The objection was prose set across a
-     thousand pixels; this gives each column roughly five hundred, which is
-     the same comfortable measure the single column had. The note keeps its
-     width and the page stops being a ribbon down the middle of a monitor.
+     thousand pixels; this gives each column roughly six hundred at a type
+     size to match, which is the same measure in CHARACTERS. The note keeps
+     its measure and the page stops being a ribbon down a wide monitor.
 
      Below 1000 nothing changes at all: one column, same order, note then
      button then steps. */
   @media (min-width: 1000px) {
     .cols {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
       align-items: start;
       gap: 56px; margin-top: 56px;
       max-width: 100%;
     }
   }
 
-  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--brand-pale); margin: 0 0 18px; font-weight: 600; }
+  h2 { font-size: clamp(13px, 0.14vw + 12.3px, 15px); text-transform: uppercase; letter-spacing: .12em; color: var(--brand-pale); margin: 0 0 18px; font-weight: 600; }
   section, .side { min-width: 0; }
 
   ol { margin: 0; padding: 0; list-style: none; counter-reset: step; }
-  ol li { counter-increment: step; position: relative; padding: 0 0 22px 46px; }
+  ol li { counter-increment: step; position: relative; padding: 0 0 24px 50px; }
   ol li::before {
     content: counter(step);
     position: absolute; left: 0; top: 1px;
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 32px; height: 32px; border-radius: 50%;
     background: var(--surface-hi); border: 1px solid var(--stroke);
-    color: var(--brand-pale); font-size: 14px; font-weight: 600;
+    color: var(--brand-pale); font-size: clamp(14px, 0.16vw + 13.2px, 16px); font-weight: 600;
     display: flex; align-items: center; justify-content: center;
   }
   ol li b { display: block; }
-  ol li span { color: var(--ink-dim); font-size: 15px; }
+  ol li span { color: var(--ink-dim); font-size: clamp(15px, 0.3vw + 13.6px, 18.5px); }
 
   /* ---- the important note ----------------------------------------------
      Two beats a second: quick enough to read as "look at me", slow enough
@@ -269,13 +269,13 @@
                box-shadow: 0 0 42px -8px rgba(168, 85, 247, .8); }
   }
 
-  .note p { margin: 0 0 12px; font-size: 15px; color: var(--ink-dim); overflow-wrap: anywhere; }
+  .note p { margin: 0 0 13px; font-size: clamp(15px, 0.3vw + 13.6px, 18.5px); color: var(--ink-dim); overflow-wrap: anywhere; }
   .note p:last-child { margin-bottom: 0; }
   .note strong { color: var(--ink); }
   .note .lead { color: var(--ink); }
   kbd {
     background: var(--surface-hi); border: 1px solid var(--stroke);
-    border-radius: 6px; padding: 1px 7px; font-size: 13px;
+    border-radius: 6px; padding: 1px 7px; font-size: clamp(13px, 0.22vw + 12px, 16px);
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     color: var(--ink); white-space: nowrap;
   }
@@ -288,7 +288,7 @@
     .btn { transition: none; }
   }
 
-  footer { margin-top: 52px; text-align: center; color: var(--ink-dim); font-size: 14px; }
+  footer { margin-top: 52px; text-align: center; color: var(--ink-dim); font-size: clamp(14px, 0.2vw + 13.2px, 16.5px); }
   footer a { color: var(--brand-pale); }
 
   @media (max-width: 480px) {
@@ -341,7 +341,7 @@
       order: 2;
       margin-top: 0;
       padding: 18px 28px;
-      font-size: clamp(16px, 0.3vw + 15px, 19px);
+      font-size: clamp(16px, 0.32vw + 15px, 20.5px);
       font-weight: 600;
     }
 
