@@ -43,7 +43,7 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font: clamp(16px, 0.45vw + 14.4px, 20px)/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font: clamp(16px, 0.5vw + 14.2px, 22px)/1.62 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     padding: 0 20px 72px;
     overflow-x: hidden;            /* nothing should ever scroll sideways */
@@ -68,7 +68,7 @@
 
   /* The PAGE may use a big screen. The reading column still may not - see
      .cols, where the measure is kept narrow on purpose. */
-  .wrap { max-width: 1240px; margin: 0 auto; }
+  .wrap { max-width: min(1560px, 92vw); margin: 0 auto; }
   .narrow { max-width: 640px; margin-left: auto; margin-right: auto; }
 
   /* ---- the mark --------------------------------------------------------
@@ -85,10 +85,10 @@
     box-shadow: 0 18px 50px -16px rgba(124, 58, 237, .75);
   }
 
-  h1 { font-size: clamp(27px, 2.3vw + 18px, 52px); line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.01em; }
+  h1 { font-size: clamp(27px, 2.5vw + 18px, 60px); line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.01em; }
   .sub {
     color: var(--ink-dim); margin: 0 auto; max-width: 42ch;
-    font-size: clamp(17px, 0.5vw + 15px, 23px);
+    font-size: clamp(17px, 0.55vw + 15px, 25.5px);
   }
 
   /* Sits under the note now, inside the same column, so it needs far less
@@ -108,7 +108,7 @@
   }
   .btn:hover { filter: brightness(1.07); box-shadow: 0 14px 40px -12px rgba(168, 85, 247, 1); }
   .btn:active { transform: translateY(2px) scale(.985); }
-  .meta { color: var(--ink-dim); font-size: clamp(14px, 0.2vw + 13.2px, 16.5px); margin-top: 12px; }
+  .meta { color: var(--ink-dim); font-size: clamp(14px, 0.24vw + 13px, 18px); margin-top: 12px; }
 
   /* The Android half, deliberately quieter.
 
@@ -202,9 +202,9 @@
      button then steps. */
   @media (min-width: 1000px) {
     .cols {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
       align-items: start;
-      gap: 56px; margin-top: 56px;
+      gap: clamp(48px, 4vw, 92px); margin-top: 56px;
       max-width: 100%;
     }
   }
@@ -219,11 +219,11 @@
     position: absolute; left: 0; top: 1px;
     width: 32px; height: 32px; border-radius: 50%;
     background: var(--surface-hi); border: 1px solid var(--stroke);
-    color: var(--brand-pale); font-size: clamp(14px, 0.16vw + 13.2px, 16px); font-weight: 600;
+    color: var(--brand-pale); font-size: clamp(14px, 0.2vw + 13px, 17.5px); font-weight: 600;
     display: flex; align-items: center; justify-content: center;
   }
   ol li b { display: block; }
-  ol li span { color: var(--ink-dim); font-size: clamp(15px, 0.3vw + 13.6px, 18.5px); }
+  ol li span { color: var(--ink-dim); font-size: clamp(15px, 0.34vw + 13.3px, 20.5px); }
 
   /* ---- the important note ----------------------------------------------
      Two beats a second: quick enough to read as "look at me", slow enough
@@ -269,7 +269,7 @@
                box-shadow: 0 0 42px -8px rgba(168, 85, 247, .8); }
   }
 
-  .note p { margin: 0 0 13px; font-size: clamp(15px, 0.3vw + 13.6px, 18.5px); color: var(--ink-dim); overflow-wrap: anywhere; }
+  .note p { margin: 0 0 14px; font-size: clamp(15px, 0.34vw + 13.3px, 20.5px); color: var(--ink-dim); overflow-wrap: anywhere; }
   .note p:last-child { margin-bottom: 0; }
   .note strong { color: var(--ink); }
   .note .lead { color: var(--ink); }
@@ -288,7 +288,7 @@
     .btn { transition: none; }
   }
 
-  footer { margin-top: 52px; text-align: center; color: var(--ink-dim); font-size: clamp(14px, 0.2vw + 13.2px, 16.5px); }
+  footer { margin-top: 52px; text-align: center; color: var(--ink-dim); font-size: clamp(14px, 0.24vw + 13px, 18px); }
   footer a { color: var(--brand-pale); }
 
   @media (max-width: 480px) {
@@ -678,7 +678,7 @@
       // The opening one is not scenery, it is a pointer at the title, so
       // it strikes early: up to full brightness in the first quarter of a
       // second, while it is still beside the letter it came from, then a
-      // long fade as it climbs away. Peaking mid-flight, as it did at
+      // long fade as it falls away. Peaking mid-flight, as it did at
       // first, put the brightest moment 250px from the word it is meant
       // to be drawing the eye to.
       var p = e / shot.life;
@@ -715,7 +715,7 @@
     }
 
     // ---- the entrance ----------------------------------------------------
-    // One star, once, leaving the final C of the title and climbing away to
+    // One star, once, leaving the final C of the title and falling away to
     // the right. The tail is behind it, so for the whole second it is in
     // flight the streak points back at the name - which is the only reason
     // this exists.
@@ -741,7 +741,7 @@
           t0: null,                                  // starts on the next frame
           x: r.right - r.width * 0.25,
           y: r.top + (window.pageYOffset || 0) + r.height * 0.3,
-          vx: 186, vy: -98,                          // up and away to the right
+          vx: 186, vy: 98,                           // falling away to the right
           len: 150, life: 1.5, opening: true
         };
         nextShot = 26;                               // and no company behind it
